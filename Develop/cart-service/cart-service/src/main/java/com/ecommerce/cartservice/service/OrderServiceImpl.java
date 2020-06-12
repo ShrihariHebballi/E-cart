@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ecommerce.cartservice.interfaces.OrderService;
 import com.ecommerce.cartservice.model.Order;
 import com.ecommerce.cartservice.repository.OrderRepository;
 

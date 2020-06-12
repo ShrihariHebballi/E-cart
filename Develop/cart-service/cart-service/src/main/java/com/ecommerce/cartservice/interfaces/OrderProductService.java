@@ -1,4 +1,4 @@
-package com.ecommerce.cartservice.service;
+package com.ecommerce.cartservice.interfaces;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

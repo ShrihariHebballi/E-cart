@@ -3,6 +3,7 @@ package com.ecommerce.cartservice.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ecommerce.cartservice.interfaces.OrderProductService;
 import com.ecommerce.cartservice.model.OrderProduct;
 import com.ecommerce.cartservice.repository.OrderProductRepository;
 

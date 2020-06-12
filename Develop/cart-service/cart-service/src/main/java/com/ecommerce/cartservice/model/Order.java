@@ -26,6 +26,10 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private Long userId;
+
+	private Long orderAmount;
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dateCreated;
 
@@ -42,8 +46,27 @@ public class Order {
 		for (OrderProduct op : orderProducts) {
 			sum += op.getTotalPrice();
 		}
-
 		return sum;
+	}
+
+	public Order() {
+		super();
+	}
+
+	public Order(Long id, Long userId, Long orderAmount, LocalDate dateCreated, String status,
+			@Valid List<OrderProduct> orderProducts) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.orderAmount = orderAmount;
+		this.dateCreated = dateCreated;
+		this.status = status;
+		this.orderProducts = orderProducts;
+	}
+
+	@Transient
+	public int getNumberOfProducts() {
+		return this.orderProducts.size();
 	}
 
 	public Long getId() {
@@ -52,6 +75,22 @@ public class Order {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getOrderAmount() {
+		return orderAmount;
+	}
+
+	public void setOrderAmount(Long orderAmount) {
+		this.orderAmount = orderAmount;
 	}
 
 	public LocalDate getDateCreated() {
@@ -76,10 +115,5 @@ public class Order {
 
 	public void setOrderProducts(List<OrderProduct> orderProducts) {
 		this.orderProducts = orderProducts;
-	}
-
-	@Transient
-	public int getNumberOfProducts() {
-		return this.orderProducts.size();
 	}
 }

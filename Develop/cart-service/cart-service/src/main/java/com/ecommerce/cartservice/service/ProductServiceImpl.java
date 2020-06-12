@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.cartservice.controller.exception.ResourceNotFoundException;
+import com.ecommerce.cartservice.interfaces.ProductService;
 import com.ecommerce.cartservice.model.Product;
 import com.ecommerce.cartservice.repository.ProductRepository;
 

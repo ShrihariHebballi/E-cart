@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecommerce.cartservice.interfaces.ProductService;
 import com.ecommerce.cartservice.model.Product;
-import com.ecommerce.cartservice.service.ProductService;
 import com.ecommerce.cartservice.service.ProductServiceImpl;
 import com.sun.istack.NotNull;
 

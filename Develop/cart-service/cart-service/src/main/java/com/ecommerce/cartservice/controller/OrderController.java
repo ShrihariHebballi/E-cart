@@ -21,17 +21,17 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.cartservice.controller.exception.ResourceNotFoundException;
 import com.ecommerce.cartservice.dto.OrderProductDto;
+import com.ecommerce.cartservice.interfaces.OrderProductService;
+import com.ecommerce.cartservice.interfaces.OrderService;
+import com.ecommerce.cartservice.interfaces.ProductService;
 import com.ecommerce.cartservice.model.Order;
 import com.ecommerce.cartservice.model.OrderProduct;
 import com.ecommerce.cartservice.model.OrderStatus;
-import com.ecommerce.cartservice.service.OrderProductService;
-import com.ecommerce.cartservice.service.OrderService;
-import com.ecommerce.cartservice.service.ProductService;
 
 
 @RestController
 @RequestMapping("/api/orders")
-public class OrderController {
+public class OrderController{
 
 	ProductService productService;
 	OrderService orderService;
