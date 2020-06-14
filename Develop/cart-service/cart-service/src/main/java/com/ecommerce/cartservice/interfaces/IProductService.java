@@ -8,7 +8,7 @@ import com.ecommerce.cartservice.model.Product;
 import com.sun.istack.NotNull;
 
 @Validated
-public interface ProductService {
+public interface IProductService {
 
 	@NotNull
 	Iterable<Product> getAllProducts();
@@ -16,4 +16,6 @@ public interface ProductService {
 	Product getProduct(@Min(value = 1L, message = "Invalid product ID.") long id);
 
 	Product save(Product product);
+
+	String delete(@Min(value = 1L, message = "Invalid product ID.") long id);
 }

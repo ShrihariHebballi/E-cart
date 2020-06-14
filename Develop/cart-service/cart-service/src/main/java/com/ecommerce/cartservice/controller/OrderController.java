@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,34 +24,33 @@ import com.ecommerce.cartservice.controller.exception.ResourceNotFoundException;
 import com.ecommerce.cartservice.dto.OrderProductDto;
 import com.ecommerce.cartservice.interfaces.OrderProductService;
 import com.ecommerce.cartservice.interfaces.OrderService;
-import com.ecommerce.cartservice.interfaces.ProductService;
+import com.ecommerce.cartservice.interfaces.IProductService;
 import com.ecommerce.cartservice.model.Order;
 import com.ecommerce.cartservice.model.OrderProduct;
 import com.ecommerce.cartservice.model.OrderStatus;
 
-
 @RestController
 @RequestMapping("/api/orders")
-public class OrderController{
+public class OrderController {
 
-	ProductService productService;
+	IProductService iProductService;
 	OrderService orderService;
 	OrderProductService orderProductService;
 
-	public OrderController(ProductService productService, OrderService orderService,
+	public OrderController(IProductService iProductService, OrderService orderService,
 			OrderProductService orderProductService) {
-		this.productService = productService;
+		this.iProductService = iProductService;
 		this.orderService = orderService;
 		this.orderProductService = orderProductService;
 	}
 
-	@GetMapping
+	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public @NotNull Iterable<Order> list() {
 		return this.orderService.getAllOrders();
 	}
 
-	@PostMapping
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Order> create(@RequestBody OrderForm form) {
 		List<OrderProductDto> formDtos = form.getProductOrders();
 		validateProductsExistence(formDtos);
@@ -61,7 +61,7 @@ public class OrderController{
 		List<OrderProduct> orderProducts = new ArrayList<>();
 		for (OrderProductDto dto : formDtos) {
 			orderProducts.add(orderProductService.create(
-					new OrderProduct(order, productService.getProduct(dto.getProduct().getId()), dto.getQuantity())));
+					new OrderProduct(order, iProductService.getProduct(dto.getProduct().getId()), dto.getQuantity())));
 		}
 
 		order.setOrderProducts(orderProducts);
@@ -78,7 +78,7 @@ public class OrderController{
 
 	private void validateProductsExistence(List<OrderProductDto> orderProducts) {
 		List<OrderProductDto> list = orderProducts.stream()
-				.filter(op -> Objects.isNull(productService.getProduct(op.getProduct().getId())))
+				.filter(op -> Objects.isNull(iProductService.getProduct(op.getProduct().getId())))
 				.collect(Collectors.toList());
 
 		if (!CollectionUtils.isEmpty(list)) {

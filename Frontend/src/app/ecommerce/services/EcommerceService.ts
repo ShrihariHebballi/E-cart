@@ -6,7 +6,7 @@ import {Injectable} from "@angular/core";
 
 @Injectable()
 export class EcommerceService {
-    private productsUrl = "/api/products";
+    private productsUrl = "/api/products/all";
     private ordersUrl = "/api/orders";
 
     private productOrder: ProductOrder;
