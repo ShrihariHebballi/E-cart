@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecommerce.userauthservice.Dto.Response;
 import com.ecommerce.userauthservice.Dto.UserInput;
 import com.ecommerce.userauthservice.IUserAuth.UserAuthInterface;
 
@@ -23,14 +24,14 @@ public class ApplicationController {
 	private UserAuthInterface userAuthI;
 
 	@RequestMapping(value = ("/create"), method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> createUser(@RequestHeader(value = "password", required = true) String password,
+	public ResponseEntity<Response> createUser(@RequestHeader(value = "password", required = true) String password,
 			@RequestBody UserInput userInput) throws NoSuchAlgorithmException, NoSuchPaddingException, Exception {
 		return userAuthI.createUser(password, userInput);
 
 	}
 
 	@RequestMapping(value = ("/login"), method = RequestMethod.POST)
-	public ResponseEntity<String> userLogin(@RequestHeader(value = "password", required = true) String password,
+	public ResponseEntity<Response> userLogin(@RequestHeader(value = "password", required = true) String password,
 			@RequestHeader(value = "userName", required = true) String userName)
 			throws NoSuchAlgorithmException, NoSuchPaddingException, Exception {
 		return userAuthI.userLogin(password, userName);
@@ -38,7 +39,7 @@ public class ApplicationController {
 	}
 
 	@RequestMapping(value = ("/update"), method = RequestMethod.POST)
-	public ResponseEntity<String> changePw(@RequestHeader(value = "oldPassword", required = true) String oldPassword,
+	public ResponseEntity<Response> changePw(@RequestHeader(value = "oldPassword", required = true) String oldPassword,
 			@RequestHeader(value = "newPassword", required = true) String newPassword,
 			@RequestHeader(value = "userName", required = true) String userName)
 			throws NoSuchAlgorithmException, NoSuchPaddingException, Exception {

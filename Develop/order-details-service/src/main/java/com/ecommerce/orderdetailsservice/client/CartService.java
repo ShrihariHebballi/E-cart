@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ecommerce.orderdetailsservice.model.Product;
 
-@FeignClient(name = "cart-service", url = "http://localhost:8080")
+@FeignClient(name = "cart-service", url = "http://localhost:8081")
 public interface CartService {
 
 	@RequestMapping(method = RequestMethod.GET, value = ("/api/products/byid"), produces = "application/json")

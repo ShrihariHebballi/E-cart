@@ -59,7 +59,7 @@ public class OrderService implements OrderInterface {
 		for (OrderProductDto op : formDtos) {
 			Product product = cartService.getProduct(op.getProductId());
 			productDetails.add(product);
-			sum = +product.getPrice();
+			sum = +(product.getPrice() * op.getQuantity());
 		}
 		return sum;
 	}

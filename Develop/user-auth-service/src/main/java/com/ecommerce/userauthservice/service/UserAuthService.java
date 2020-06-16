@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.userauthservice.Dto.Response;
 import com.ecommerce.userauthservice.Dto.UserInput;
 import com.ecommerce.userauthservice.IUserAuth.UserAuthInterface;
 import com.ecommerce.userauthservice.model.LoginCredentials;
@@ -27,7 +28,7 @@ public class UserAuthService implements UserAuthInterface {
 	private EncryptionDecryption encryptDecrypt;
 
 	@Override
-	public ResponseEntity<String> createUser(String password, UserInput userInput)
+	public ResponseEntity<Response> createUser(String password, UserInput userInput)
 			throws NoSuchAlgorithmException, NoSuchPaddingException, Exception {
 
 		try {
@@ -39,13 +40,14 @@ public class UserAuthService implements UserAuthInterface {
 			credentials.setPassword(encryptDecrypt.encrypt(password, encryptDecrypt.keyGenerator()));
 			credentials = this.userUtils.presistCredentials(credentials);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new String("Error!! While creating User account"), HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<>(new Response("FAILED", "Error!! While creating User account"),
+					HttpStatus.NOT_ACCEPTABLE);
 		}
-		return new ResponseEntity<>(new String("User Account created Successfully"), HttpStatus.CREATED);
+		return new ResponseEntity<>(new Response("SUCCESS", "User Account created Successfully"), HttpStatus.CREATED);
 	}
 
 	@Override
-	public ResponseEntity<String> userLogin(String password, String userName)
+	public ResponseEntity<Response> userLogin(String password, String userName)
 			throws NoSuchAlgorithmException, NoSuchPaddingException, Exception {
 		Optional<UserDetails> userDetails = userUtils.findByUserName(userName);
 		if (userDetails.isPresent()) {
@@ -53,16 +55,16 @@ public class UserAuthService implements UserAuthInterface {
 			boolean value = encryptDecrypt.compare(password,
 					encryptDecrypt.decrypt(loginCred.getPassword(), encryptDecrypt.keyGenerator()));
 			if (value) {
-				return new ResponseEntity<>(new String("Authentication Passed"), HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(new Response("SUCCESS", "Authentication Passed"), HttpStatus.ACCEPTED);
 			} else {
-				return new ResponseEntity<>(new String("Invalid Password"), HttpStatus.NOT_ACCEPTABLE);
+				return new ResponseEntity<>(new Response("FAILED", "Invalid Password"), HttpStatus.NOT_ACCEPTABLE);
 			}
 		}
-		return new ResponseEntity<>(new String("Invalid User"), HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(new Response("FAILED", "Invalid User"), HttpStatus.UNAUTHORIZED);
 	}
 
 	@Override
-	public ResponseEntity<String> changePw(String oldPassword, String newPassword, String userName)
+	public ResponseEntity<Response> changePw(String oldPassword, String newPassword, String userName)
 			throws NoSuchAlgorithmException, NoSuchPaddingException, Exception {
 		boolean value = false;
 		LoginCredentials loginCred = new LoginCredentials();
@@ -75,12 +77,12 @@ public class UserAuthService implements UserAuthInterface {
 			if (value) {
 				loginCred.setPassword(encryptDecrypt.encrypt(newPassword, encryptDecrypt.keyGenerator()));
 				loginCred = this.userUtils.presistCredentials(loginCred);
-				return new ResponseEntity<>(new String("Successfully Changed Password"), HttpStatus.OK);
+				return new ResponseEntity<>(new Response("SUCCESS", "Successfully Changed Password"), HttpStatus.OK);
 			} else {
-				return new ResponseEntity<>(new String("Invalid Password"), HttpStatus.NOT_ACCEPTABLE);
+				return new ResponseEntity<>(new Response("FAILED", "Invalid Password"), HttpStatus.NOT_ACCEPTABLE);
 			}
 		}
-		return new ResponseEntity<>(new String("Invalid User"), HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(new Response("FAILED", "Invalid User"), HttpStatus.UNAUTHORIZED);
 	}
 
 }
