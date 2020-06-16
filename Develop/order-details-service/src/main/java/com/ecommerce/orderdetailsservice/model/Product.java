@@ -2,41 +2,20 @@ package com.ecommerce.orderdetailsservice.model;
 
 import java.time.LocalDate;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.CreationTimestamp;
-
-@Entity
 public class Product {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@NotNull(message = "Product name is required.")
-	@Basic(optional = false)
 	private String name;
-
 	private Double price;
-
 	private String pictureUrl;
-
 	private String status;
-
-	@CreationTimestamp
 	private LocalDate createdAt;
-
+	
 	public Product() {
 		super();
 	}
 
-	public Product(Long id, @NotNull(message = "Product name is required.") String name, Double price,
-			String pictureUrl, String status, LocalDate createdAt) {
+	public Product(Long id, String name, Double price, String pictureUrl, String status, LocalDate createdAt) {
 		super();
 		this.id = id;
 		this.name = name;

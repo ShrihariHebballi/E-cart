@@ -1,49 +1,38 @@
 package com.ecommerce.orderdetailsservice.model;
 
-import javax.persistence.Column;
+import java.io.Serializable;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Table;
 
 @Entity
-public class OrderProduct {
+@Table(name = "order_product")
+public class OrderProduct implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	@JsonIgnore
-	private OrderProductPK pk;
+	private OrderProductKey oPKey;
 
-	@Column(nullable = false)
 	private Integer quantity;
 
 	public OrderProduct() {
 		super();
 	}
 
-	public OrderProduct(Order order, Product product, Integer quantity) {
-		pk = new OrderProductPK();
-		pk.setOrder(order);
-		pk.setProduct(product);
+	public OrderProduct(OrderProductKey oPKey, Integer quantity) {
+		super();
+		this.oPKey = oPKey;
 		this.quantity = quantity;
 	}
 
-	@Transient
-	public Product getProduct() {
-		return this.pk.getProduct();
+	public OrderProductKey getoPKey() {
+		return oPKey;
 	}
 
-	@Transient
-	public Double getTotalPrice() {
-		return getProduct().getPrice() * getQuantity();
-	}
-
-	public OrderProductPK getPk() {
-		return pk;
-	}
-
-	public void setPk(OrderProductPK pk) {
-		this.pk = pk;
+	public void setoPKey(OrderProductKey oPKey) {
+		this.oPKey = oPKey;
 	}
 
 	public Integer getQuantity() {
@@ -58,31 +47,24 @@ public class OrderProduct {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((pk == null) ? 0 : pk.hashCode());
-
+		result = prime * result + ((oPKey == null) ? 0 : oPKey.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		OrderProduct other = (OrderProduct) obj;
-		if (pk == null) {
-			if (other.pk != null) {
+		if (oPKey == null) {
+			if (other.oPKey != null)
 				return false;
-			}
-		} else if (!pk.equals(other.pk)) {
+		} else if (!oPKey.equals(other.oPKey))
 			return false;
-		}
-
 		return true;
 	}
 }

@@ -1,26 +1,24 @@
 package com.ecommerce.orderdetailsservice.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.Valid;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "orders")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "orderProducts")
-public class Order {
+public class Order implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,45 +26,19 @@ public class Order {
 
 	private Long userId;
 
-	private Long orderAmount;
+	private Double orderAmount;
 
+	@CreationTimestamp
 	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Column(updatable = false)
 	private LocalDate dateCreated;
 
 	private String status;
 
-	@OneToMany(mappedBy = "pk.order")
-	@Valid
-	private List<OrderProduct> orderProducts = new ArrayList<>();
-
-	@Transient
-	public Double getTotalOrderPrice() {
-		double sum = 0D;
-		List<OrderProduct> orderProducts = getOrderProducts();
-		for (OrderProduct op : orderProducts) {
-			sum += op.getTotalPrice();
-		}
-		return sum;
-	}
+	private Long totalNumberOfProducts;
 
 	public Order() {
 		super();
-	}
-
-	public Order(Long id, Long userId, Long orderAmount, LocalDate dateCreated, String status,
-			@Valid List<OrderProduct> orderProducts) {
-		super();
-		this.id = id;
-		this.userId = userId;
-		this.orderAmount = orderAmount;
-		this.dateCreated = dateCreated;
-		this.status = status;
-		this.orderProducts = orderProducts;
-	}
-
-	@Transient
-	public int getNumberOfProducts() {
-		return this.orderProducts.size();
 	}
 
 	public Long getId() {
@@ -85,11 +57,11 @@ public class Order {
 		this.userId = userId;
 	}
 
-	public Long getOrderAmount() {
+	public Double getOrderAmount() {
 		return orderAmount;
 	}
 
-	public void setOrderAmount(Long orderAmount) {
+	public void setOrderAmount(Double orderAmount) {
 		this.orderAmount = orderAmount;
 	}
 
@@ -109,11 +81,11 @@ public class Order {
 		this.status = status;
 	}
 
-	public List<OrderProduct> getOrderProducts() {
-		return orderProducts;
+	public Long getTotalNumberOfProducts() {
+		return totalNumberOfProducts;
 	}
 
-	public void setOrderProducts(List<OrderProduct> orderProducts) {
-		this.orderProducts = orderProducts;
+	public void setTotalNumberOfProducts(Long totalNumberOfProducts) {
+		this.totalNumberOfProducts = totalNumberOfProducts;
 	}
 }
